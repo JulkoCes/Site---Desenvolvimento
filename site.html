@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberSecurity: Guardian</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-color: #0a192f;
+            color: #64ffda;
+        }
+
+        /* Navbar */
+        .navbar {
+            padding: 20px;
+            background-color: #020c1b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            color: #64ffda;
+            text-decoration: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+            background: linear-gradient(45deg, #020c1b, #0a192f);
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+        }
+
+        /* Features Grid */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 20px;
+        }
+
+        .feature-card {
+            background: #112240;
+            padding: 30px;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Demo Section */
+        .demo-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #112240;
+            border-radius: 10px;
+        }
+
+        .threat-detection {
+            border: 2px solid #64ffda;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .scan-progress {
+            height: 20px;
+            background: #020c1b;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #64ffda;
+            transition: width 1s;
+        }
+
+        /* Cores temáticas */
+        .cyber-text {
+            color: #64ffda;
+        }
+
+        .alert {
+            color: #ff6363;
+        }
+    </style>
+</head>
+
+<div class="matrix-effect" id="matrixEffect"></div>
+
+<script>
+    
+    function createMatrix() {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        document.getElementById('matrixEffect').appendChild(canvas);
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+        const drops = Array(Math.floor(canvas.width / 20)).fill(0);
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 20, 27, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#64ffda';
+            ctx.font = '18px monospace';
+
+            drops.forEach((drop, i) => {
+                const char = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(char, i * 20, drop * 20);
+                
+                if(drop * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+
+        setInterval(draw, 50);
+    }
+    createMatrix();
+</script>
+
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">CyberGuard</a>
+        <div class="nav-links">
+            <a href="#features">Recursos</a>
+            <a href="#demo">Demo</a>
+            <a href="#contact">Contato</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Proteção Digital <span class="cyber-text">Inteligente</span></h1>
+        <p>Defenda seus sistemas contra ameaças cibernéticas em tempo real</p>
+    </section>
+
+    <section id="features" class="features">
+        <div class="feature-card">
+            <i class="fas fa-shield-alt fa-3x"></i>
+            <h3>Firewall Inteligente</h3>
+            <p>Proteção em camadas contra invasões</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-lock fa-3x"></i>
+            <h3>Criptografia AES-256</h3>
+            <p>Proteção máxima de dados sensíveis</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-bug fa-3x"></i>
+            <h3>Detecção de Malware</h3>
+            <p>Análise comportamental em tempo real</p>
+        </div>
+    </section>
+
+    <section id="demo" class="demo-container">
+        <h2>Demonstração Interativa</h2>
+        <div class="threat-detection">
+            <h4>Simulação de Detecção de Ameaças</h4>
+            <div id="network-traffic" class="scan-progress">
+                <div class="progress-bar"></div>
+            </div>
+            <div id="threat-log" class="threat-log"></div>
+            <button onclick="startScan()" class="scan-button">Iniciar Varredura</button>
+        </div>
+
+        <div class="vulnerability-test">
+            <h4>Teste de Vulnerabilidade</h4>
+            <div class="security-status">
+                <p>Status do Sistema: <span id="status" class="alert">Não Protegido</span></p>
+                <button onclick="toggleProtection()" class="protection-toggle">Ativar Proteção</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Simulação de varredura de rede
+        function startScan() {
+            const progressBar = document.querySelector('.progress-bar');
+            const threatLog = document.getElementById('threat-log');
+            
+            let width = 0;
+            const scanInterval = setInterval(() => {
+                if(width >= 100) {
+                    clearInterval(scanInterval);
+                    threatLog.innerHTML += '<p>Varredura completa! 3 ameaças neutralizadas</p>';
+                } else {
+                    width += 10;
+                    progressBar.style.width = width + '%';
+                    
+                    if(width % 30 === 0) {
+                        threatLog.innerHTML += `<p>Ameaça detectada na porta ${Math.floor(Math.random()*60000)}</p>`;
+                    }
+                }
+            }, 500);
+        }
+
+        // Sistema de proteção
+        let protectionActive = false;
+        function toggleProtection() {
+            const status = document.getElementById('status');
+            protectionActive = !protectionActive;
+            
+            if(protectionActive) {
+                status.textContent = "Protegido";
+                status.classList.remove('alert');
+                status.classList.add('cyber-text');
+                document.querySelector('.protection-toggle').textContent = "Desativar Proteção";
+            } else {
+                status.textContent = "Não Protegido";
+                status.classList.remove('cyber-text');
+                status.classList.add('alert');
+                document.querySelector('.protection-toggle').textContent = "Ativar Proteção";
+            }
+        }
+
+        // Atualização automática de status
+        setInterval(() => {
+            if(protectionActive) {
+                document.querySelector('#threat-log').innerHTML += 
+                    `<p>${new Date().toLocaleTimeString()}: Sistema seguro</p>`;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
